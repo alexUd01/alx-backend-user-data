@@ -72,7 +72,7 @@ class BasicAuth(Auth):
                 user_list = User.search(attributes={'email': user_email})
             except Exception:
                 user_list = None
-            
+
             if user_list:
                 user = user_list[0]
                 if user.is_valid_password(user_pwd):
