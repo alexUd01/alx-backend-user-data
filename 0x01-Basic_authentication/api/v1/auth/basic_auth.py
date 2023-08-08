@@ -66,12 +66,12 @@ class BasicAuth(Auth):
         A method that returns the User instance based on user `email` and
         `password`
         """
-        if user_email and isinstance(user_email, str) \
-           and user_pwd and isinstance(user_pwd, str):
+        if user_email and type(user_email) is str \
+           and user_pwd and type(user_pwd) is str:
             user_list = User.search(attributes={'email': user_email})
-            if user_list:
+            if len(user_list):
                 user = user_list[0]
-                if User.is_valid_password(user, user_pwd):
+                if user.is_valid_password(user_pwd):
                     return user
         return None
 
