@@ -70,7 +70,7 @@ class BasicAuth(Auth):
            and user_pwd and type(user_pwd) is str:
             try:
                 user_list = User.search(attributes={'email': user_email})
-            except AttributeError:
+            except Exception:
                 user_list = None
 
             if user_list:
