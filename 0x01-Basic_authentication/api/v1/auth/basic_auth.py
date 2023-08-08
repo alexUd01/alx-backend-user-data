@@ -63,7 +63,8 @@ class BasicAuth(Auth):
             self, user_email: str, user_pwd: str
     ) -> TypeVar('User'):
         """
-        A method that returns the User instance based on his email and password
+        A method that returns the User instance based on user `email` and
+        `password`
         """
         if user_email and isinstance(user_email, str) \
            and user_pwd and isinstance(user_pwd, str):
@@ -81,4 +82,18 @@ class BasicAuth(Auth):
         A method that overloads `Auth` and retrieves `User` instance for
         a request
         """
-        pass
+        if request:
+            auth_head_val = super().authorization_header(request)
+            if auth_head_val:
+                b64credential = self.extract_base64_authorization_header(
+                    auth_head_val)
+                if b64credential:
+                    str_credential = self.decode_base64_authorization_header(
+                        b64credential)
+                    if str_credential:
+                        u_email, u_passwd = extract_user_credentials(
+                            str_credential)
+                        if u_email and u_passwd:
+                            return user_object_from_credentials(
+                                u_email, u_passwd)
+        return None
