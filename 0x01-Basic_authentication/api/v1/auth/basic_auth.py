@@ -91,9 +91,9 @@ class BasicAuth(Auth):
                     str_credential = self.decode_base64_authorization_header(
                         b64credential)
                     if str_credential:
-                        u_email, u_passwd = extract_user_credentials(
+                        u_email, u_passwd = self.extract_user_credentials(
                             str_credential)
                         if u_email and u_passwd:
-                            return user_object_from_credentials(
+                            return self.user_object_from_credentials(
                                 u_email, u_passwd)
         return None
