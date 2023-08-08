@@ -17,8 +17,7 @@ class Auth:
         return False
 
     def authorization_header(self, request=None) -> str:
-        """ Retreives authorization header if any """
-        print(request.headers)
+        """ Retreives authorization header if available """
         if request:
             if request.headers.get('Authorization'):
                 return request.headers.get('Authorization')

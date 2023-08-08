@@ -4,6 +4,8 @@ Basic authentication module that contains a class `BasicAuth` that
 extends `api.v1.auth.auth.Auth`
 """
 from .auth import Auth
+from typing import TypeVar
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -56,3 +58,27 @@ class BasicAuth(Auth):
                     u_passwd = decoded_base64_authorization_header[idx + 1:]
                     return u_email, u_passwd
         return None, None
+
+    def user_object_from_credentials(
+            self, user_email: str, user_pwd: str
+    ) -> TypeVar('User'):
+        """
+        A method that returns the User instance based on his email and password
+        """
+        if user_email and isinstance(user_email, str) \
+           and user_pwd and isinstance(user_pwd, str):
+            User.save_to_file()
+            User.load_from_file()
+            user_list = User.search(attributes={'email': user_email})
+            if user_list:
+                user = user_list[0]
+                if user.is_valid_password(user_pwd):
+                    return user
+        return None
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """
+        A method that overloads `Auth` and retrieves `User` instance for
+        a request
+        """
+        pass
