@@ -28,8 +28,8 @@ class BasicAuth(Auth):
         A method that returns the decoded value of a Base64 string stored
         in `base64_authorization_header` argument
         """
-        from base64 import b64decode
-        from base64 import  binascii
+        from base64 import b64decode, binascii
+
         if base64_authorization_header:
             if isinstance(base64_authorization_header, str):
                 try:
@@ -40,3 +40,19 @@ class BasicAuth(Auth):
                     str_val = bin_val.decode(encoding='utf-8')
                     return str_val
         return None
+
+    def extract_user_credentials(
+            self, decoded_base64_authorization_header: str
+    ) -> (str, str):
+        """
+        A method that returns the user email and password from the Base64
+        decoded value
+        """
+        if decoded_base64_authorization_header:
+            if isinstance(decoded_base64_authorization_header, str):
+                if ":" in decoded_base64_authorization_header:
+                    idx = decoded_base64_authorization_header.find(':')
+                    u_email = decoded_base64_authorization_header[:idx]
+                    u_passwd = decoded_base64_authorization_header[idx + 1:]
+                    return u_email, u_passwd
+        return None, None
