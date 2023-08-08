@@ -70,7 +70,7 @@ class BasicAuth(Auth):
            and user_pwd and isinstance(user_pwd, str):
             user_list = User.search(attributes={'email': user_email})
             if user_list:
-                user = user_list[0]
+                user = user_list[-1]
                 if user.is_valid_password(user_pwd):
                     return user
         return None
