@@ -68,8 +68,6 @@ class BasicAuth(Auth):
         """
         if user_email and isinstance(user_email, str) \
            and user_pwd and isinstance(user_pwd, str):
-            User.save_to_file()
-            User.load_from_file()
             user_list = User.search(attributes={'email': user_email})
             if user_list:
                 user = user_list[0]
