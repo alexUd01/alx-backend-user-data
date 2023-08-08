@@ -69,10 +69,10 @@ class BasicAuth(Auth):
         if user_email and type(user_email) is str \
            and user_pwd and type(user_pwd) is str:
             user_list = User.search(attributes={'email': user_email})
-            if user_list and len(user_list) == 1:
-                user = user_list[0]
-                if user.is_valid_password(user_pwd):
-                    return user
+            if user_list:
+                for user in user_list:
+                    if user.is_valid_password(user_pwd):
+                        return user
         return None
 
     def current_user(self, request=None) -> TypeVar('User'):
