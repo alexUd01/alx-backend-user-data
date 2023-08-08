@@ -52,7 +52,7 @@ def b4_each_request() -> None:
     if auth is None:
         return None
     excluded_paths = [
-        '/api/v1/status/',
+        '/api/v1/stat*',
         '/api/v1/unauthorized/',
         '/api/v1/forbidden/'
     ]

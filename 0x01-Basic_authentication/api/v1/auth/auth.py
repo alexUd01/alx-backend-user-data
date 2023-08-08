@@ -11,8 +11,17 @@ class Auth:
         """ Returns true if a path is not among excluded paths """
         if path is None or excluded_paths is None:
             return True
-        if path.rstrip('/') not in list(map(lambda x: x.rstrip('/'),
-                                            excluded_paths)):
+
+        stripped_routes_list = list(map(lambda x: x.rstrip('/'),
+                                        excluded_paths))
+        # - Implement wildcard matching -
+        for p in stripped_routes_list:
+            if p.endswith('*'):
+                if path.startswith(p.rstrip('*')):
+                    return False
+        # - ----------- END ----------- -
+
+        if path.rstrip('/') not in stripped_routes_list:
             return True
         return False
 
