@@ -21,11 +21,13 @@ if AUTH_TYPE:
     from api.v1.auth.basic_auth import BasicAuth
     from api.v1.auth.session_auth import SessionAuth
     from api.v1.auth.session_exp_auth import SessionExpAuth
+    from api.v1.auth.session_db_auth import SessionDBAuth
     auth_types = {
         'auth': Auth,
         'basic_auth': BasicAuth,
         'session_auth': SessionAuth,
-        'session_exp_auth': SessionExpAuth
+        'session_exp_auth': SessionExpAuth,
+        'session_db_auth': SessionDBAuth
     }
     auth = auth_types[AUTH_TYPE]()
 
