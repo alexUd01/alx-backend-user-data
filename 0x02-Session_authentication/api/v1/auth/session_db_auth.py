@@ -59,7 +59,7 @@ class SessionDBAuth(SessionExpAuth):
                 for k, obj in DATA['UserSession'].items():
                     if obj.session_id == session_id:
                         del DATA['UserSession'][k]
-                        # Save changes
                         UserSession.save_to_file()
+                        break
             return destroyed
         return None
