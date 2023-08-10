@@ -15,11 +15,12 @@ class SessionDBAuth(SessionExpAuth):
         creates and stores a new instance of `UserSession` and returns
         the session ID.
         """
-        session_id = super().create_session(user_id)
-        if session_id:
-            user_session = UserSession(user_id, session_id)
-            user_session.save()
-            return session_id
+        if user_id:
+            session_id = super().create_session(user_id)
+            if session_id:
+                user_session = UserSession(user_id, session_id)
+                user_session.save()
+                return session_id
         return None
 
     def user_id_for_session_id(self, session_id=None):
