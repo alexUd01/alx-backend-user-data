@@ -28,7 +28,7 @@ def login():
             SESSION_NAME = os.getenv('SESSION_NAME')
             if SESSION_NAME:
                 resp.set_cookie(SESSION_NAME, session_id)
-            return resp # Returns response whether cookie is set or not
+            return resp  # Returns response whether cookie is set or not
         else:
             return jsonify({"error": "wrong password"}), 401
     return jsonify({"error": "no user found for this email"}), 404
