@@ -40,7 +40,7 @@ class Auth:
     def session_cookie(self, request=None):
         """ A method that returns a cookie value from a request """
         if request:
-            session_name = os.getenv('SESSION_NAME')
-            if session_name:
-                return request.cookies.get(session_name)
+            SESSION_NAME = os.getenv('SESSION_NAME')
+            if SESSION_NAME:
+                return request.cookies.get(SESSION_NAME)
         return None
