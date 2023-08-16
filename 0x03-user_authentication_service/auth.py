@@ -60,4 +60,17 @@ class Auth:
         return str(uuid4())
 
     def create_session(self, email: str) -> str:
-        """ A method that returns the session id string for a given email """
+        """
+        A method that finds the user corresponding to the email, generates
+        a new UUID and stores it in the database as the user’s session_id,
+        then return the session ID.
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+        except Exception:
+            return None
+        else:
+            session_id = self._generate_uuid()
+            user.session_id = session_id
+            return session_id
+        return None
