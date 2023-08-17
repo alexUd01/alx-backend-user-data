@@ -18,12 +18,11 @@ def _hash_password(password: str) -> bytes:
     return passwd_hash
 
 
-def _generate_uuid(self) -> str:
+def _generate_uuid() -> str:
     """
     Generates a string representation of a new UUID using uuid module.
     """
-    u_id = uuid4()
-    return str(u_id)
+    return str(uuid4())
 
 
 class Auth:
