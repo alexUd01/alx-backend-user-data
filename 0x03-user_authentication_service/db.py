@@ -44,10 +44,11 @@ class DB:
         """
         A method that returns a new `User` object.
         """
-        user = User(email=email, hashed_password=hashed_password)
-        self._session.add(user)
-        self._session.commit()
-        return user
+        if email and hashed_password:
+            user = User(email=email, hashed_password=hashed_password)
+            self._session.add(user)
+            self._session.commit()
+            return user
 
     def find_user_by(self, **kwargs: Dict) -> User:
         """
@@ -74,4 +75,3 @@ class DB:
             setattr(user, k, v)
 
         self._session.commit()
-        return None
