@@ -55,7 +55,7 @@ class DB:
         A method that returns the first row found in the `users` table
         as filtered by the method's input arguments.
         """
-        if kwargs:
+        if kwargs and type(kwargs) is dict:
             user = self._session.query(User).filter_by(**kwargs).one()
             return user
         raise NoResultFound
