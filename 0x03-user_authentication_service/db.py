@@ -49,7 +49,7 @@ class DB:
         self._session.commit()
         return user
 
-    def find_user_by(self, **kwargs: Dict[Any, Any]) -> User:
+    def find_user_by(self, **kwargs: Dict) -> User:
         """
         A method that returns the first row found in the `users` table
         as filtered by the method's input arguments.
@@ -57,7 +57,7 @@ class DB:
         user = self._session.query(User).filter_by(**kwargs).one()
         return user
 
-    def update_user(self, user_id: int, **kwargs: Dict[Any, Any]) -> None:
+    def update_user(self, user_id: int, **kwargs: Dict) -> None:
         """
         A method that uses `find_user_by` to locate the users to update, then
         will update the user's attribute as passed in the method's arguments
