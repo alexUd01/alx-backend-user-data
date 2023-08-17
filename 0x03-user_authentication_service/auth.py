@@ -127,7 +127,7 @@ class Auth:
         except Exception:
             raise ValueError
         else:
-            user.reset_token = generate_uuid()
+            user.reset_token = _generate_uuid()
             return user.reset_token
 
     def update_password(self, reset_token: str, password: str) -> None:
