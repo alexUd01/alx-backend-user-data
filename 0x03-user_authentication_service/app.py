@@ -73,8 +73,7 @@ def get_reset_password_token() -> str:
 
     session_id = request.cookies.get('session_id')
     if not session_id:
-        print('---------------- NOT IMPLEMENTED YET --------------------')
-        return '------------ NOT IMPLEMENTED YET ------------------'
+        abort(403)
 
     user = AUTH.get_user_from_session_id(session_id)
     if email == user.email:
