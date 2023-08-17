@@ -71,15 +71,7 @@ def get_reset_password_token() -> str:
     """ Reset user password """
     email = request.form.get('email')
 
-    session_id = request.cookies.get('session_id')
-    if not session_id:
-        abort(403)
-
-    try:
-        user = AUTH.get_user_from_session_id(session_id)
-    except ValueError:
-        abort(403)
-    else:
+    if email:
         reset_pass_token = AUTH.get_reset_password_token(email)
         return jsonify({"email": email, "reset_token": reset_pass_token})
 
