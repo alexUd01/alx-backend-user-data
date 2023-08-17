@@ -56,8 +56,14 @@ class DB:
         as filtered by the method's input arguments.
         """
         if kwargs and type(kwargs) is dict:
+            column_names = User.__table__.columns.keys()
+            for key in kwargs.keys():
+                if key not in column_names:
+                    raise InvalidRequestError
+
             user = self._session.query(User).filter_by(**kwargs).one()
             return user
+
         raise InvalidRequestError
 
     def update_user(self, user_id: int, **kwargs: Dict) -> None:
