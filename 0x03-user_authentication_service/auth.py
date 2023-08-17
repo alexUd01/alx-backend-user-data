@@ -102,5 +102,3 @@ class Auth:
             else:
                 user.session_id = None
         return None
-
-    def 
