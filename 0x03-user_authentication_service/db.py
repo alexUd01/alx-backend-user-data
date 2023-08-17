@@ -11,9 +11,11 @@ from user import Base, User
 # `NoResultFound` has been moved from `sqlalchemy.orm.exc` to `sqlalchemy.exc`
 # between the version 1.3.x and 1.4.x
 try:
-    from sqlalchemy.orm.exc import NoResultFound, InvalidRequestError
+    from sqlalchemy.orm.exc import NoResultFound
 except AttributeError:
-    from sqlalchemy.exc import NoResultFound, InvalidRequestError
+    from sqlalchemy.exc import NoResultFound
+finally:
+    from sqlalchemy.exc import InvalidRequestError
 
 
 class DB:
