@@ -31,7 +31,7 @@ def users() -> str:
 
 
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
-def login():
+def login() -> str:
     """ Login page """
     email = request.form.get('email')
     password = request.form.get('password')
@@ -41,6 +41,62 @@ def login():
         resp.set_cookie('session_id', session_id)
         return resp
     abort(401)
+
+
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout() -> str:
+    """ Logout function """
+    session_id = request.cookies.get('session_id')
+    if session_id:
+        user = AUTH.get_user_from_session_id(session_id)
+        if user:
+            AUTH.destroy_session(user.id)
+            redirect(url_for('index'))
+    abort(403)
+
+
+@app.route('/profile', strict_slashes=False)
+def profile() -> str:
+    """ Profile function """
+    session_id = request.cookies.get('session_id')
+    if session_id:
+        user = AUTH.get_user_from_session_id(session_id)
+        if user:
+            return jsonify({"email": user.email})
+    abort(403)
+
+
+@app.route('/reset_password', methods=['POST'], strict_slashes=False)
+def get_reset_password_token() -> str:
+    """ Reset user password """
+    email = request.form.get('email')
+
+    session_id = request.cookies.get('session_id')
+    if not session_id:
+        print('---------------- NOT IMPLEMENTED YET --------------------')
+        return '------------ NOT IMPLEMENTED YET ------------------'
+
+    user = AUTH.get_user_from_session_id(session_id)
+    if email == user.email:
+        reset_pass_token = AUTH.get_reset_password_token(email)
+        return jsonify({"email": email, "reset_token": reset_pass_token})
+
+    abort(403)
+
+
+@app.route('/reset_password', methods=['PUT'], strict_slashes=False)
+def update_password() -> str:
+    """ Update the user password """
+    email = request.form.get('email')
+    reset_token = request.form.get('reset_token')
+    new_password = request.form.get('new_password')
+
+    try:
+        AUTH.update_password(reset_token, new_password)
+    except ValueError:
+        abort(403)
+    else:
+        return jsonify({"email": email, "message": "Password updated"})
 
 
 if __name__ == "__main__":

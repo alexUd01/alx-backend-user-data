@@ -28,6 +28,10 @@ class Auth:
         """
         Documentation
         """
+        if not email:
+            pass  # NOTE: Dont know what to do
+        if not password:
+            pass  # NOTE: Dont know what to do
         user = None
         try:
             user = self._db.find_user_by(email=email)
@@ -44,6 +48,10 @@ class Auth:
         checks the password with `bcrypt.checkpw`. If it matches return `True`.
         In any other case, return `False`.
         """
+        if not email:
+            return False
+        if not password:
+            return False
         try:
             user = self._db.find_user_by(email=email)
         except Exception:
@@ -66,6 +74,8 @@ class Auth:
         a new UUID and stores it in the database as the user’s session_id,
         then return the session ID.
         """
+        if not email:
+            return
         try:
             user = self._db.find_user_by(email=email)
         except Exception:
@@ -102,3 +112,34 @@ class Auth:
             else:
                 user.session_id = None
         return None
+
+    def get_reset_password_token(self, email: str) -> str:
+        """
+        A method that find the user corresponding to the email. If the user
+        does not exist, raise a ValueError exception. If it exists, generate
+        a UUID and update the user’s reset_token database field. Return the
+        token.
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+        except Exception:
+            raise ValueError
+        else:
+            user.reset_token = self._generate_uuid()
+            return user.reset_token
+
+    def update_password(self, reset_token: str, password: str) -> None:
+        """
+        Use the `reset_token` to find the corresponding user. If it does not
+        exist, raise a `ValueError` exception.
+
+        Otherwise, hash the password and update the user’s `hashed_password`
+        field with the new hashed password and the `reset_token` field to None
+        """
+        try:
+            user = self._db.find_user_by(reset_token=reset_token)
+        except Exception:
+            raise ValueError
+        else:
+            user.hashed_password = _hash_password(password)
+            user.reset_token = None
