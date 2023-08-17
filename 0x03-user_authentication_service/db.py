@@ -58,7 +58,7 @@ class DB:
         if kwargs and type(kwargs) is dict:
             user = self._session.query(User).filter_by(**kwargs).one()
             return user
-        raise NoResultFound
+        raise InvalidRequestError
 
     def update_user(self, user_id: int, **kwargs: Dict) -> None:
         """
