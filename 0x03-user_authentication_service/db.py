@@ -67,9 +67,10 @@ class DB:
                        'reset_token']
         user = self.find_user_by(id=user_id)
 
-        for k, v in kwargs.items():
+        for k in kwargs.keys():
             if k not in valid_attrs:
                 raise ValueError
+        for k, v in kwargs.items():
             setattr(user, k, v)
 
         self._session.commit()
