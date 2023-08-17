@@ -3,6 +3,7 @@
 from bcrypt import hashpw, gensalt, checkpw
 from db import DB
 from user import User
+from uuid import uuid4
 from typing import Union
 
 salt = gensalt()
@@ -65,8 +66,8 @@ class Auth:
         """
         Generates a string representation of a new UUID using uuid module.
         """
-        from uuid import uuid4
-        return str(uuid4())
+        u_id = uuid4()
+        return str(u_id)
 
     def create_session(self, email: str) -> str:
         """
