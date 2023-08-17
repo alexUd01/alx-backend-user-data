@@ -54,15 +54,6 @@ class DB:
         A method that returns the first row found in the `users` table
         as filtered by the method's input arguments.
         """
-        # `NoResultFound` has been moved from `sqlalchemy.orm.exc` to `sqlalchemy.exc`
-        # between the version 1.3.x and 1.4.x
-        try:
-            from sqlalchemy.orm.exc import NoResultFound
-        except AttributeError:
-            from sqlalchemy.exc import NoResultFound
-        finally:
-            from sqlalchemy.exc import InvalidRequestError
-
         user = self._session.query(User).filter_by(**kwargs).one()
         return user
 
