@@ -74,3 +74,4 @@ class DB:
             setattr(user, k, v)
 
         self._session.commit()
+        return None
