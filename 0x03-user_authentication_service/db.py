@@ -55,7 +55,9 @@ class DB:
         as filtered by the method's input arguments.
         """
         user = self._session.query(User).filter_by(**kwargs).one()
-        return user
+        if user:
+            return user
+        raise NoResultFound
 
     def update_user(self, user_id: int, **kwargs: Dict) -> None:
         """
