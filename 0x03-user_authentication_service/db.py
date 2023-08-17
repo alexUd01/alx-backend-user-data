@@ -50,25 +50,15 @@ class DB:
             self._session.commit()
             return user
 
-    def find_user_by(self, **kwargs: Dict) -> User:
+    def find_user_by(self, **kwargs) -> User:
         """
         A method that returns the first row found in the `users` table
         as filtered by the method's input arguments.
         """
-        if not kwargs:
-            raise InvalidRequestError
-        column_names = User.__table__.columns.keys()
-        for key in kwargs.keys():
-            if key not in column_names:
-                raise InvalidRequestError
-        user = self._session.query(User).filter_by(**kwargs).first()
-        if user is None:
-            raise NoResultFound
-
+        user = self._session.query(User).filter_by(**kwargs).one()
         return user
 
-
-    def update_user(self, user_id: int, **kwargs: Dict) -> None:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """
         A method that uses `find_user_by` to locate the users to update, then
         will update the user's attribute as passed in the method's arguments
