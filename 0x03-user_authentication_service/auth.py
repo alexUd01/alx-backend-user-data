@@ -18,6 +18,14 @@ def _hash_password(password: str) -> bytes:
     return passwd_hash
 
 
+def _generate_uuid(self) -> str:
+    """
+    Generates a string representation of a new UUID using uuid module.
+    """
+    u_id = uuid4()
+    return str(u_id)
+
+
 class Auth:
     """Auth class to interact with the authentication database.
     """
@@ -62,13 +70,6 @@ class Auth:
                 return True
         return False
 
-    def _generate_uuid(self) -> str:
-        """
-        Generates a string representation of a new UUID using uuid module.
-        """
-        u_id = uuid4()
-        return str(u_id)
-
     def create_session(self, email: str) -> str:
         """
         A method that finds the user corresponding to the email, generates
@@ -82,7 +83,7 @@ class Auth:
         except Exception:
             return None
         else:
-            session_id = self._generate_uuid()
+            session_id = _generate_uuid()
             user.session_id = session_id
             return session_id
         return None
@@ -126,7 +127,7 @@ class Auth:
         except Exception:
             raise ValueError
         else:
-            user.reset_token = self._generate_uuid()
+            user.reset_token = generate_uuid()
             return user.reset_token
 
     def update_password(self, reset_token: str, password: str) -> None:
