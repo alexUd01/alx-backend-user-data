@@ -55,8 +55,10 @@ class DB:
         A method that returns the first row found in the `users` table
         as filtered by the method's input arguments.
         """
-        user = self._session.query(User).filter_by(**kwargs).one()
-        return user
+        if kwargs:
+            user = self._session.query(User).filter_by(**kwargs).one()
+            return user
+        raise NoResultFound
 
     def update_user(self, user_id: int, **kwargs: Dict) -> None:
         """
