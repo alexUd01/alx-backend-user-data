@@ -75,10 +75,15 @@ def get_reset_password_token() -> str:
     if not session_id:
         abort(403)
 
-    user = AUTH.get_user_from_session_id(session_id)
-    if email == str(user.email):
-        reset_pass_token = AUTH.get_reset_password_token(email)
-        return jsonify({"email": email, "reset_token": reset_pass_token})
+    try:
+        user = AUTH.get_user_from_session_id(session_id)
+    except ValueError:
+        abort(403)
+    else:
+        if email == str(user.email):
+            reset_pass_token = AUTH.get_reset_password_token(email)
+            return jsonify({"email": email, "reset_token": reset_pass_token})
+        abort(403)
 
     abort(403)
 
