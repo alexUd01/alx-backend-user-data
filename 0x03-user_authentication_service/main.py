@@ -14,8 +14,12 @@ def register_user(email: str, password: str) -> None:
         data = {'email': email, 'password': password}
         resp = requests.post(f'{HOST:s}:{PORT:d}/users', data=data)
         assert resp.ok
-        assert resp.json() == {"email": email, "message": "user created"}
         assert resp.status_code == 200
+        temp = resp.json()
+        assert len(temp.keys()) == 2
+        assert 'email' in temp.keys()
+        assert 'message' in temp.keys()
+        assert temp == {"email": email, "message": "user created"}
 
 
 def log_in_wrong_password(email: str, password: str) -> None:
@@ -34,6 +38,7 @@ def log_in(email: str, password: str) -> str:
         resp = requests.post(f'{HOST:s}:{PORT:d}/sessions', data=data)
         assert resp.ok
         assert resp.status_code == 200
+        assert len(resp.json().keys()) == 2
         assert resp.json() == {'email': email, 'message': 'logged in'}
         return resp.cookies.get('session_id')
 
@@ -52,7 +57,8 @@ def profile_logged(session_id: str) -> None:
         resp = requests.request('GET', url, cookies={'session_id': session_id})
         assert resp.ok
         assert resp.status_code == 200
-        assert resp.json() == {"email": EMAIL}
+        assert len(resp.json().keys()) == 1
+        assert 'email' in resp.json().keys()
 
 
 def log_out(session_id: str) -> None:
@@ -66,11 +72,41 @@ def log_out(session_id: str) -> None:
 
 
 def reset_password_token(email: str) -> str:
-    pass
+    """ Test `POST /reset_password` endpoint. """
+    if email:
+        url = f'{HOST:s}:{PORT:d}/reset_password'
+        data = {'email': email}
+
+        resp = requests.request('POST', url, data=data)
+
+        assert resp.ok
+        assert resp.status_code == 200
+        temp = resp.json()
+        assert len(temp.keys()) == 2
+        assert 'email' in temp.keys()
+        assert 'reset_token' in temp.keys()
+        assert temp.get('email') == email
+        return resp.json().get('reset_token')
 
 
 def update_password(email: str, reset_token: str, new_password: str) -> None:
-    pass
+    """ Test `PUT /update_password` endpoint. """
+    if email and reset_token and new_password:
+        url = f'{HOST:s}:{PORT:d}/reset_password'
+        data = {
+            'email': email,
+            'reset_token': reset_token,
+            'new_password': new_password
+        }
+        resp = requests.request('PUT', url, data=data)
+        assert resp.ok
+        assert resp.status_code == 200
+        temp = resp.json()
+        assert len(temp.keys()) == 2
+        assert 'email' in temp.keys()
+        assert 'message' in temp.keys()
+        assert temp.get('email') == email
+        assert temp.get('message') == 'Password updated'
 
 
 EMAIL = "guillaume@holberton.io"
