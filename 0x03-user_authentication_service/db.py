@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
+from typing import Dict, Any
 
 from user import Base, User
 
@@ -48,7 +49,7 @@ class DB:
         self._session.commit()
         return user
 
-    def find_user_by(self, **kwargs: dict) -> User:
+    def find_user_by(self, **kwargs: Dict[Any, Any]) -> User:
         """
         A method that returns the first row found in the `users` table
         as filtered by the method's input arguments.
@@ -56,7 +57,7 @@ class DB:
         user = self._session.query(User).filter_by(**kwargs).one()
         return user
 
-    def update_user(self, user_id: int, **kwargs: dict) -> None:
+    def update_user(self, user_id: int, **kwargs: Dict[Any, Any]) -> None:
         """
         A method that uses `find_user_by` to locate the users to update, then
         will update the user's attribute as passed in the method's arguments
